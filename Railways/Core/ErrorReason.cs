@@ -2,7 +2,7 @@ using System;
 
 namespace Railways.Core
 {
-    public class ErrorMessage
+    public class ErrorReason
     {
     }
 }

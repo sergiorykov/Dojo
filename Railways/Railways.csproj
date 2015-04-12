@@ -49,14 +49,13 @@
   <ItemGroup>
     <Compile Include="Core\AggregateErrorResult.cs" />
     <Compile Include="Core\Check.cs" />
-    <Compile Include="Core\ErrorMessage.cs" />
+    <Compile Include="Core\ErrorReason.cs" />
     <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Core\Result.cs" />
     <Compile Include="Core\Extensions\ResultExtensions.cs" />
     <Compile Include="Core\ResultOfT.cs" />
     <Compile Include="Errors\CustomerNameMustNotBeBlank.cs" />
     <Compile Include="Errors\CustomerNameMustNotBeLongerThen.cs" />
-    <Compile Include="Errors\CustomerNotRegistered.cs" />
     <Compile Include="Errors\PhoneNumberHasInvalidFormat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

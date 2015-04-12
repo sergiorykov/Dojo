@@ -1,5 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
+using Nelibur.Sword.DataStructures;
+using Nelibur.Sword.Extensions;
 
 namespace Railways.Core
 {
@@ -10,19 +12,19 @@ namespace Railways.Core
         }
 
         public bool Success { get; private set; }
-        public ErrorMessage Error { get; private set; }
+        public ErrorReason Error { get; private set; }
 
         public bool Failure
         {
             get { return !Success; }
         }
 
-        protected void Failed(ErrorMessage errorMessage)
+        protected void Failed(ErrorReason errorReason)
         {
-            Check.NotNull(errorMessage, "errorMessage");
+            Check.NotNull(errorReason, "errorReason");
 
             Success = false;
-            Error = errorMessage;
+            Error = errorReason;
         }
 
         protected void Succeeded()
@@ -30,10 +32,10 @@ namespace Railways.Core
             Success = true;
         }
 
-        public static Result Fail(ErrorMessage message)
+        public static Result Fail(ErrorReason reason)
         {
             var result = new Result();
-            result.Failed(message);
+            result.Failed(reason);
 
             return result;
         }
@@ -46,14 +48,44 @@ namespace Railways.Core
             return result;
         }
 
-        public static Result<T> Fail<T>(ErrorMessage message)
+        public static Result<T> Fail<T>(ErrorReason reason)
         {
-            return Result<T>.Fail(message);
+            return Result<T>.Fail(reason);
         }
 
         public static Result<T> Ok<T>([NotNull] T value)
         {
             return Result<T>.Ok(value);
+        }
+
+        public Result And(Result otherResult)
+        {
+            if (Failure)
+            {
+                return this;
+            }
+
+            return otherResult;
+        }
+
+        public Result And(Option<Result> otherResult)
+        {
+            if (Failure)
+            {
+                return this;
+            }
+
+            return otherResult.MapOnEmpty(() => this).Value;
+        }
+
+        public Result And<T>(Option<Result<T>> otherResult)
+        {
+            if (Failure)
+            {
+                return this;
+            }
+
+            return otherResult.ToType<Result>().MapOnEmpty(() => this).Value;
         }
     }
 }

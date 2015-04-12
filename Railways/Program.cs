@@ -1,4 +1,5 @@
-﻿using Nelibur.Sword.DataStructures;
+﻿using System;
+using Nelibur.Sword.DataStructures;
 using Nelibur.Sword.Extensions;
 using Railways.Core;
 using Railways.Core.Extensions;
@@ -19,30 +20,30 @@ namespace Railways
             // http://enterprisecraftsmanship.com/2015/03/20/functional-c-handling-failures-input-errors/
             // http://enterprisecraftsmanship.com/2015/02/26/exceptions-for-flow-control-in-c/
             // https://vimeo.com/113707214
-            Result<CustomerName> customerName = CustomerName.Create(request.CustomerName);
-            Option<Result<PhoneNumber>> phoneNumber = request.PhoneNumber.ToOption()
+            var customerName = CustomerName.Create(request.CustomerName);
+            var phoneNumber = request.PhoneNumber.ToOption()
                 .Map(x => PhoneNumber.Create(x));
 
-            var resultBuilder = AggregateErrorResult.From(customerName);
-            phoneNumber.Do(x => resultBuilder.Add(x));
-            var result = resultBuilder.Create(() => new CustomerNotRegistered());
-
-            //result.OnSuccess(x => RegisterInDb(x));
-            //Result<CustomerName> customerName = CustomerName.Create("Leo");
-
+            customerName.And(phoneNumber)
+                .OnSuccess(() => new Customer
+                {
+                    Name = customerName.Value,
+                    PhoneNumber = phoneNumber.Map(x => x.Value)
+                })
+                .OnSuccess(x => RegisterInDb(x));
         }
 
-        private static Result RegisterInDb(CustomerName customerName)
+        private static Result RegisterInDb(Customer customer)
         {
-            return Result.Fail(new CustomerNameMustNotBeBlank());
+            return Result.Ok();
         }
+
 
         private sealed class Request
         {
             public string CustomerName { get; set; }
-            public string PhoneNumber { get; set; } 
+            public string PhoneNumber { get; set; }
         }
-
     }
 
 
@@ -51,6 +52,7 @@ namespace Railways
         public CustomerName Name { get; set; }
         public Option<PhoneNumber> PhoneNumber { get; set; }
     }
+
 
     public sealed class CustomerName
     {
@@ -79,6 +81,7 @@ namespace Railways
         }
     }
 
+
     public sealed class PhoneNumber
     {
         public PhoneNumber(string value)
@@ -98,5 +101,4 @@ namespace Railways
             return Result.Ok(new PhoneNumber(value));
         }
     }
-
 }

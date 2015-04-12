@@ -22,10 +22,10 @@ namespace Railways.Core
 
         }
 
-        public new static Result<T> Fail(ErrorMessage message)
+        public new static Result<T> Fail(ErrorReason reason)
         {
             var result = new Result<T>();
-            result.Failed(message);
+            result.Failed(reason);
 
             return result;
         }
@@ -35,20 +35,15 @@ namespace Railways.Core
             Check.NotNull(value, "value");
             
             var result = new Result<T>();
-            result.Succeeded(value);
+            result.Succeeded();
+            result.Value = value;
 
             return result;
         }
 
-        public static implicit operator Result<T>(ErrorMessage message)
+        public static implicit operator Result<T>(ErrorReason reason)
         {
-            return Fail<T>(message);
-        }
-        
-        private void Succeeded(T value)
-        {
-            Succeeded();
-            Value = value;
+            return Fail<T>(reason);
         }
     }
 }

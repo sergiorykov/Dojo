@@ -2,7 +2,7 @@
 
 namespace Railways.Errors
 {
-    public sealed class CustomerNameMustNotBeBlank : ErrorMessage
+    public sealed class CustomerNameMustNotBeBlank : ErrorReason
     {
     }
 }

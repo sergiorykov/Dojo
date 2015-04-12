@@ -8,10 +8,10 @@ namespace Railways.Core
     {
         private AggregateErrorResult()
         {
-            Errors = new List<ErrorMessage>();
+            Errors = new List<ErrorReason>();
         }
 
-        public List<ErrorMessage> Errors { get; private set; }
+        public List<ErrorReason> Errors { get; private set; }
 
         public static Builder From(Result result)
         {
@@ -20,7 +20,7 @@ namespace Railways.Core
 
         public sealed class Builder
         {
-            private readonly List<ErrorMessage> errors = new List<ErrorMessage>();
+            private readonly List<ErrorReason> errors = new List<ErrorReason>();
 
             public Builder Add(Result result)
             {
@@ -32,7 +32,7 @@ namespace Railways.Core
                 return this;
             }
 
-            public AggregateErrorResult Create(Func<ErrorMessage> aggregatedError)
+            public AggregateErrorResult Create(Func<ErrorReason> aggregatedError)
             {
                 var result = new AggregateErrorResult();
 

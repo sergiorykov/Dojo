@@ -2,7 +2,7 @@
 
 namespace Railways.Errors
 {
-    public sealed class PhoneNumberHasInvalidFormat : ErrorMessage
+    public sealed class PhoneNumberHasInvalidFormat : ErrorReason
     {
     }
 }

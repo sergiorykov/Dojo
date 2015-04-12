@@ -3,7 +3,7 @@ using Railways.Core;
 
 namespace Railways.Errors
 {
-    public sealed class CustomerNameMustNotBeLongerThen : ErrorMessage
+    public sealed class CustomerNameMustNotBeLongerThen : ErrorReason
     {
         public CustomerNameMustNotBeLongerThen(int value)
         {
