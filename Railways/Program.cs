@@ -1,8 +1,8 @@
 ﻿using System;
 using Nelibur.Sword.DataStructures;
 using Nelibur.Sword.Extensions;
-using Railways.Core;
 using Railways.Core.Extensions;
+using Railways.Core.Results;
 using Railways.Errors;
 
 namespace Railways
@@ -30,11 +30,25 @@ namespace Railways
                     Name = customerName.Value,
                     PhoneNumber = phoneNumber.Map(x => x.Value)
                 })
-                .OnSuccess(x => RegisterInDb(x));
+                .OnSuccess(x => RegisterInDb(x))
+                .OnBoth(Log);
+        }
+
+        private static void Log(Result result)
+        {
+            Console.WriteLine(result);
+            if (result.Failure)
+            {
+                result.ErrorReason.ToOption()
+                    .MatchType<CustomerNameMustNotBeBlank>(x => Console.WriteLine("customer name must not be blank"))
+                    .MatchType<CustomerNameMustNotBeLongerThen>(x => Console.WriteLine("customer name must not be longer then {0}".FormatWith(x.MaxLength)))
+                    .MatchType<PhoneNumberHasInvalidFormat>(x => Console.WriteLine("phone number has invalid format"));
+            }
         }
 
         private static Result RegisterInDb(Customer customer)
         {
+            Console.WriteLine(customer);
             return Result.Ok();
         }
 

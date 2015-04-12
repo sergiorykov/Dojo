@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Railways.Core
+namespace Railways.Core.Results
 {
     public sealed class AggregateErrorResult : Result
     {
@@ -18,6 +18,7 @@ namespace Railways.Core
             return new Builder().Add(result);
         }
 
+
         public sealed class Builder
         {
             private readonly List<ErrorReason> errors = new List<ErrorReason>();
@@ -26,7 +27,7 @@ namespace Railways.Core
             {
                 if (result.Failure)
                 {
-                    errors.Add(result.Error);
+                    errors.Add(result.ErrorReason);
                 }
 
                 return this;

@@ -36,6 +36,7 @@ namespace Railways.Core
         }
     }
 
+
     [DebuggerStepThrough]
     public static class Check
     {
@@ -97,11 +98,11 @@ namespace Railways.Core
         public static T IsDefined<T>(T value, [InvokerParameterName] [NotNull] string parameterName)
             where T : struct
         {
-            if (!Enum.IsDefined(typeof (T), value))
+            if (!Enum.IsDefined(typeof(T), value))
             {
                 NotEmpty(parameterName, "parameterName");
                 throw new ArgumentException("Invalid enum value '{0}' of {1}".FormatWith(parameterName,
-                    typeof (T).FullName));
+                    typeof(T).FullName));
             }
 
             return value;

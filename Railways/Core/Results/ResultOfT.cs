@@ -1,6 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 
-namespace Railways.Core
+namespace Railways.Core.Results
 {
     public sealed class Result<T> : Result
     {
@@ -14,12 +15,7 @@ namespace Railways.Core
                 return value;
             }
 
-            private set
-            {
-
-                this.value = value;
-            }
-
+            private set { this.value = value; }
         }
 
         public new static Result<T> Fail(ErrorReason reason)
@@ -33,7 +29,7 @@ namespace Railways.Core
         public static Result<T> Ok([NotNull] T value)
         {
             Check.NotNull(value, "value");
-            
+
             var result = new Result<T>();
             result.Succeeded();
             result.Value = value;

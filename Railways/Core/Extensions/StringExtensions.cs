@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 namespace Railways.Core.Extensions
 {
@@ -12,7 +11,7 @@ namespace Railways.Core.Extensions
 
         public static void Throw<TException>(this string message) where TException : Exception
         {
-            ConstructorInfo constructorInfo = typeof(TException).GetConstructor(new[] { typeof(string) });
+            var constructorInfo = typeof(TException).GetConstructor(new[] { typeof(string) });
             if (constructorInfo != null)
             {
                 throw (TException)constructorInfo.Invoke(new object[] { message });

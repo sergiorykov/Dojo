@@ -1,4 +1,5 @@
 ﻿using System;
+using Railways.Core.Results;
 
 namespace Railways.Core.Extensions
 {
@@ -7,7 +8,9 @@ namespace Railways.Core.Extensions
         public static Result OnSuccess(this Result result, Func<Result> func)
         {
             if (result.Failure)
+            {
                 return result;
+            }
 
             return func();
         }
@@ -15,7 +18,9 @@ namespace Railways.Core.Extensions
         public static Result OnSuccess(this Result result, Action action)
         {
             if (result.Failure)
+            {
                 return result;
+            }
 
             action();
 
@@ -25,7 +30,9 @@ namespace Railways.Core.Extensions
         public static Result OnSuccess<T>(this Result<T> result, Action<T> action)
         {
             if (result.Failure)
+            {
                 return result;
+            }
 
             action(result.Value);
 
@@ -35,7 +42,9 @@ namespace Railways.Core.Extensions
         public static Result<T> OnSuccess<T>(this Result result, Func<T> func)
         {
             if (result.Failure)
-                return Result.Fail<T>(result.Error);
+            {
+                return Result.Fail<T>(result.ErrorReason);
+            }
 
             return Result.Ok(func());
         }
@@ -43,7 +52,9 @@ namespace Railways.Core.Extensions
         public static Result<T> OnSuccess<T>(this Result result, Func<Result<T>> func)
         {
             if (result.Failure)
-                return Result.Fail<T>(result.Error);
+            {
+                return Result.Fail<T>(result.ErrorReason);
+            }
 
             return func();
         }
@@ -51,7 +62,9 @@ namespace Railways.Core.Extensions
         public static Result OnSuccess<T>(this Result<T> result, Func<T, Result> func)
         {
             if (result.Failure)
+            {
                 return result;
+            }
 
             return func(result.Value);
         }

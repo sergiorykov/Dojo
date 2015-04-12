@@ -1,5 +1,6 @@
 ﻿using System;
 using Railways.Core;
+using Railways.Core.Results;
 
 namespace Railways.Errors
 {

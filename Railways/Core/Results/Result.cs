@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Nelibur.Sword.DataStructures;
 using Nelibur.Sword.Extensions;
 
-namespace Railways.Core
+namespace Railways.Core.Results
 {
     public class Result
     {
@@ -12,7 +12,7 @@ namespace Railways.Core
         }
 
         public bool Success { get; private set; }
-        public ErrorReason Error { get; private set; }
+        public ErrorReason ErrorReason { get; private set; }
 
         public bool Failure
         {
@@ -24,7 +24,7 @@ namespace Railways.Core
             Check.NotNull(errorReason, "errorReason");
 
             Success = false;
-            Error = errorReason;
+            ErrorReason = errorReason;
         }
 
         protected void Succeeded()
